@@ -4,7 +4,7 @@ import {useState, useEffect} from 'react'
 function App() {
   const [enabled,setEnabled] = useState(false)//Estado y actualizacion para el boton "Activar efecto"
   const [position,setPosition]= useState({x: 0 ,y: 0})//Inicializar la posicion del div que emula el efecto.
- 
+ //Efecto de seguimiento del cursor
   useEffect(()=>{ 
     
     const handleMove = (event) =>{
@@ -19,7 +19,14 @@ function App() {
       window.removeEventListener('pointermove',handleMove)
     } //Clean previous effect before execute next to avoid issues like events overlap .
   },[enabled])
-
+ useEffect(()=>{
+  //Add 'no-cursor' css class to body when enabled true
+  document.body.classList.toggle('no-cursor',enabled)
+  // Clean effect
+  return () => {
+    document.body.classList.remove('no-cursor')
+  }
+ },[enabled])
   return (
     <main>
       <div style={
